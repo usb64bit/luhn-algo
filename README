@@ -1,0 +1,7 @@
+Luhn Algorithm
+
+usage 
+
+$luhn = new LuhnAlgorith("7992739871")
+echo $luhn->check();
+echo $luhn->getAccountNumbers();
