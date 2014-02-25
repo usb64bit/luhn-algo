@@ -1,8 +1,15 @@
 <?php
-
+/**
+ * LuhnAlgorithm
+ * 
+ * usage 
+ * $luhn = new LuhnAlgorith("7992739871")
+ * echo $luhn->check();
+ * echo $luhn->getAccountNumbers();
+ */
 class LuhnAlgorithm
 {
-    private $accountNumber = '';
+    private $acountNumbers;
 
     private $checkDigit = 0;
 
@@ -10,11 +17,12 @@ class LuhnAlgorithm
 
     public function __construct($numbers)
     {
+
         //strip all letters and characters
         $numbers = preg_replace("/[^0-9]/","",$numbers);
-
+        $this->accountNumbers = $numbers;
         //loop through
-        for($i=0; $i<strlen($numbers); $i++)
+        for($i=0; $i<strlen($numbers)-1; $i++)
         {
             //if even number
             if(($i+1)%2 == 0)
@@ -26,29 +34,23 @@ class LuhnAlgorithm
                 }
             }
 
-            $this->accountNumber .= $numbers[$i];
-
+            //keep a running total
             $this->total += $numbers[$i];
         }
 
-        $this->checkDigit = (10-($this->total % 10));
+        //10 minus the total modded with 10
+        $checkDigit = (10-($this->total % 10));
+        $this->checkDigit = ($checkDigit == 10)? 0:$checkDigit;
     }
 
-    public function getCheckDigit()
+    public function check()
     {
-        return ($this->checkDigit == 10)? 0 : $this->checkDigit;
+        return (substr($this->accountNumbers, -1) == $this->checkDigit);
     }
 
-    public function getAccountNumber()
+    public function getAccountNumbers()
     {
-        return $this->accountNumber;
+        return $this->accountNumbers;
     }
 
-  
 }
-
-
-$algo = new LuhnAlgo("9993639871");
-
-
-//require_once(dirname(__DIR__)."/xf/Application.php");
